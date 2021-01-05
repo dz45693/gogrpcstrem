@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package api;
+// Any消息类型允许您将消息作为嵌入类型，而不需要它们 .proto定义。Any包含任意序列化的消息(字节)，以及一个URL，该URL充当该消息的全局唯一标识符并解析为该消息的类型。要使用Any类型，你需要导入google/protobuf/any.proto.
+import "google/protobuf/any.proto";
+
+message HelloRequest {
+  string greeting = 1;
+  map<string, string> infos  = 2;
+}
+
+message HelloResponse {
+  string reply = 1;
+  repeated google.protobuf.Any details = 2;
+}
+
+service HelloService {
+  rpc SayHello(HelloRequest) returns (HelloResponse){}
+  rpc ListHello(HelloRequest) returns (stream HelloResponse) {}
+  rpc SayMoreHello(stream HelloRequest) returns (HelloResponse) {}
+  rpc SayHelloChat(stream HelloRequest) returns (stream HelloRequest) {}
+}
+
+message Hello {
+	string msg = 1;
+}
+
+message Error {
+	repeated string msg = 1;
+}
